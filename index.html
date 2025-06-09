@@ -192,8 +192,8 @@
 
 <script>
 const issueData = [
-  { date: "2025-06-05", new: 10, open: 8, closed: 2, severe: 2 },
-  { date: "2025-06-09", new: 9, open: 9, closed: 0, severe: 4 },
+  { date: "2025-06-05", new: 10, open: 8, closed: 9, severe: 2 },
+  { date: "2025-06-09", new: 9, open: 9, closed: 4, severe: 4 },
   { date: "2025-06-10", new: "-", open: "-", closed: "-", severe: "-" },
   { date: "2025-06-11", new: "-", open: "-", closed: "-", severe: "-" },
   { date: "2025-06-12", new: "-", open: "-", closed: "-", severe: "-" },
@@ -250,13 +250,13 @@ function updateTableAndCharts() {
 
   // Update metrics
   const sum = (arr) => arr.reduce((acc, val) => isNumber(val) ? acc + val : acc, 0);
-  const totalNew = sum(newIssues);
+  const totalOpen = sum(openIssues);
   const totalClosed = sum(closedIssues);
-  const percentResolved = totalNew + totalClosed === 0 ? 0 : Math.round((totalClosed / (totalNew + totalClosed)) * 100);
+  const percentResolved = totalOpen + totalClosed === 0 ? 0 : Math.round((totalClosed / (totalOpen + totalClosed)) * 100);
 
-  document.getElementById("totalNew").textContent = totalNew;
-  document.getElementById("totalClosed").textContent = totalClosed;
-  document.getElementById("percentResolved").textContent = percentResolved + "%";
+document.getElementById("totalNew").textContent = totalOpen;
+document.getElementById("totalClosed").textContent = totalClosed;
+document.getElementById("percentResolved").textContent = percentResolved + "%";
 
   mainChart.data.labels = labels;
   mainChart.data.datasets[0].data = newIssues;
