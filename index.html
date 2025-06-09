@@ -252,7 +252,7 @@ function updateTableAndCharts() {
   const sum = (arr) => arr.reduce((acc, val) => isNumber(val) ? acc + val : acc, 0);
   const totalOpen = sum(openIssues);
   const totalClosed = sum(closedIssues);
-  const percentResolved = totalOpen + totalClosed === 0 ? 0 : Math.round((totalClosed / (totalOpen + totalClosed)) * 100);
+  const percentResolved = totalOpen + totalClosed === 0 ? 0 : Math.round((totalClosed / (totalOpen)) * 100);
 
 document.getElementById("totalNew").textContent = totalOpen;
 document.getElementById("totalClosed").textContent = totalClosed;
