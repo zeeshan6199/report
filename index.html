@@ -287,7 +287,8 @@
       const severeData = filtered.map(d => isNumber(d.severe) ? d.severe : null);
 
       const sum = arr => arr.reduce((a, b) => isNumber(b) ? a + b : a, 0);
-      document.getElementById("totalNew").textContent = sum(openData);
+      const latestOpen = openData.reverse().find(v => isNumber(v));
+document.getElementById("totalNew").textContent = latestOpen ?? "-";
       document.getElementById("totalClosed").textContent = sum(closedData);
       document.getElementById("percentResolved").textContent = openData.length
         ? Math.round((sum(closedData) / (sum(openData) + sum(closedData))) * 100) + "%"
