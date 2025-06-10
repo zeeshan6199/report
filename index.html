@@ -237,6 +237,7 @@
   <script>
     const issueData = [
       { date: "2025-06-09", new: 9, open: 20, closed: 4, severe: 7 },
+      { date: "2025-06-10", new: 7, open:16, closed:10, severe: 7 },
       ...Array.from({length: 21}, (_, i) => {
         const d = new Date("2025-06-10");
         d.setDate(d.getDate() + i);
@@ -245,7 +246,8 @@
     ];
 
     const severeDetailsByDate = {
-      "2025-06-09": ["[Supplier User] Supplier user is able to approve/reject decalaration if submitted decaration is opened through breadcrumbs.", "[CMRT] Answers from file are not imported.", "[TEST] Invalid error pop up upon save and undefined appears in part type when parent spec is created after standalone spec.","[TEST] Last error persists throughout the session using the test instance.","[TEST] Material category value is not picked from import file.","Blank dashboard for user with report viewer role.","[TEST] Grid is cleared but calculated compliance value is still appearing."]
+      "2025-06-09": ["[Supplier User] Supplier user is able to approve/reject decalaration if submitted decaration is opened through breadcrumbs.", "[CMRT] Answers from file are not imported.", "[TEST] Invalid error pop up upon save and undefined appears in part type when parent spec is created after standalone spec.","[TEST] Last error persists throughout the session using the test instance.","[TEST] Material category value is not picked from import file.","Blank dashboard for user with report viewer role.","[TEST] Grid is cleared but calculated compliance value is still appearing."],
+      "2025-06-10": ["[Supplier User] Supplier user is able to approve/reject decalaration if submitted decaration is opened through breadcrumbs.", "[CMRT] Answers from file are not imported.", "[TEST] Invalid error pop up upon save and undefined appears in part type when parent spec is created after standalone spec.","[TEST] Last error persists throughout the session using the test instance.","[TEST] Material category value is not picked from import file.","No 'Add Scip attribute' option present in toolbar when spec reach svhc and obj in open to supplier state.","[TEST] Preliminary Non-Compliance Report showing no data for SCIP section.","[TEST] When subpart row is selected on reach svhc declaration , add scip attributes option should appear.","[Supplier Email AI] No reminder email back to supplier mentioning file wasn't uploaded and retry is needed."],
     };
 
     const tbody = document.querySelector("#issueTable tbody");
