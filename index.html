@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Issue Report Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     :root {
       --bg: #f4f6f9;
@@ -12,7 +13,6 @@
       --header: #343a40;
       --table-border: #ddd;
     }
-
     [data-theme="dark"] {
       --bg: #1e1e2f;
       --card: #2c2c3e;
@@ -20,7 +20,6 @@
       --header: #444;
       --table-border: #444;
     }
-
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
@@ -29,12 +28,10 @@
       padding: 20px;
       transition: background 0.3s ease, color 0.3s ease;
     }
-
     h2 {
       text-align: center;
       margin-bottom: 10px;
     }
-
     .controls {
       display: flex;
       justify-content: space-between;
@@ -42,11 +39,9 @@
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
-
     .controls > * {
       margin: 5px 10px;
     }
-
     .summary-cards {
       display: flex;
       gap: 20px;
@@ -54,7 +49,6 @@
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
-
     .card {
       background: var(--card);
       padding: 15px 20px;
@@ -63,56 +57,46 @@
       min-width: 180px;
       text-align: center;
     }
-
     .card h3 {
       margin: 0;
       font-size: 16px;
       color: goldenrod;
     }
-
     .card p {
       margin: 5px 0 0;
       font-size: 22px;
       font-weight: bold;
     }
-
     .container {
       display: flex;
       flex-wrap: wrap;
       gap: 40px;
     }
-
     .table-container {
       flex: 1;
       min-width: 300px;
     }
-
     .chart-container {
       flex: 2;
       min-width: 600px;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       background: var(--card);
     }
-
     th, td {
       padding: 10px;
       text-align: center;
       border: 1px solid var(--table-border);
     }
-
     th {
       background: var(--header);
       color: #fff;
     }
-
     tr:nth-child(even) {
       background: rgba(0, 0, 0, 0.02);
     }
-
     canvas {
       width: 100% !important;
       height: 300px !important;
@@ -121,7 +105,6 @@
       border-radius: 6px;
       margin-top: 20px;
     }
-
     button {
       padding: 8px 14px;
       border: none;
@@ -130,11 +113,9 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     button:hover {
       background: #23272b;
     }
-
     input[type="date"] {
       padding: 6px 10px;
       border-radius: 5px;
@@ -143,15 +124,16 @@
   </style>
 </head>
 <body data-theme="light">
-
   <h2>📊 Release Issue Tracking Report</h2>
-
   <div class="controls">
     <div>
       <label>From: <input type="date" id="startDate" /></label>
       <label>To: <input type="date" id="endDate" /></label>
     </div>
-    <button id="toggleTheme">Toggle Dark Mode</button>
+    <div>
+      <button id="exportPDF">📄 Export to PDF</button>
+      <button id="toggleTheme">🌓 Toggle Dark Mode</button>
+    </div>
   </div>
 
   <div class="summary-cards">
@@ -169,155 +151,161 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="table-container">
-      <table id="issueTable">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>New</th>
-            <th>Open</th>
-            <th>Closed</th>
-            <th>Severe</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="chart-container">
-      <canvas id="mainChart"></canvas>
-      <canvas id="zoomedChart"></canvas>
+  <div id="reportContent">
+    <div class="container">
+      <div class="table-container">
+        <table id="issueTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>New</th>
+              <th>Open</th>
+              <th>Closed</th>
+              <th>Severe</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="chart-container">
+        <canvas id="mainChart"></canvas>
+        <canvas id="zoomedChart"></canvas>
+      </div>
     </div>
   </div>
 
-<script>
-const issueData = [
-  { date: "2025-06-09", new: 9, open:20, closed: 4, severe: 7 },
-  { date: "2025-06-10", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-11", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-12", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-13", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-14", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-15", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-16", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-17", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-18", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-19", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-20", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-21", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-22", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-23", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-24", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-25", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-26", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-27", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-28", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-29", new: "-", open: "-", closed: "-", severe: "-" },
-  { date: "2025-06-30", new: "-", open: "-", closed: "-", severe: "-" }
-];
+  <script>
+    const issueData = [
+      { date: "2025-06-09", new: 9, open:20, closed: 4, severe: 7 },
+      ...Array.from({length: 21}, (_, i) => {
+        const d = new Date("2025-06-10");
+        d.setDate(d.getDate() + i);
+        return { date: d.toISOString().split('T')[0], new: "-", open: "-", closed: "-", severe: "-" };
+      })
+    ];
 
-const tbody = document.querySelector("#issueTable tbody");
-const startDateInput = document.getElementById("startDate");
-const endDateInput = document.getElementById("endDate");
+    const tbody = document.querySelector("#issueTable tbody");
+    const startDateInput = document.getElementById("startDate");
+    const endDateInput = document.getElementById("endDate");
 
-function isNumber(value) {
-  return typeof value === "number";
-}
-
-function updateTableAndCharts() {
-  tbody.innerHTML = "";
-
-  const start = new Date(startDateInput.value || "2025-06-01");
-  const end = new Date(endDateInput.value || "2025-06-30");
-
-  let filtered = issueData.filter(d => {
-    const dDate = new Date(d.date);
-    return dDate >= start && dDate <= end;
-  });
-
-  filtered.forEach(row => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${row.date}</td><td>${row.new}</td><td>${row.open}</td><td>${row.closed}</td><td>${row.severe}</td>`;
-    tbody.appendChild(tr);
-  });
-
-  const labels = filtered.map(d => d.date);
-  const newIssues = filtered.map(d => isNumber(d.new) ? d.new : null);
-  const closedIssues = filtered.map(d => isNumber(d.closed) ? d.closed : null);
-  const openIssues = filtered.map(d => isNumber(d.open) ? d.open : null);
-  const severeIssues = filtered.map(d => isNumber(d.severe) ? d.severe : null);
-
-  // Update metrics
-  const sum = (arr) => arr.reduce((acc, val) => isNumber(val) ? acc + val : acc, 0);
-  const totalOpen = sum(openIssues);
-  const totalClosed = sum(closedIssues);
-  const percentResolved = totalOpen + totalClosed === 0 ? 0 : Math.round((totalClosed / (totalOpen+totalClosed)) * 100);
-
-document.getElementById("totalNew").textContent = totalOpen;
-document.getElementById("totalClosed").textContent = totalClosed;
-document.getElementById("percentResolved").textContent = percentResolved + "%";
-
-  mainChart.data.labels = labels;
-  mainChart.data.datasets[0].data = newIssues;
-  mainChart.data.datasets[1].data = openIssues;
-  mainChart.data.datasets[2].data = closedIssues;
-  mainChart.data.datasets[3].data = severeIssues;
-  mainChart.update();
-
-  zoomedChart.data.labels = labels;
-  zoomedChart.data.datasets[0].data = newIssues;
-  zoomedChart.data.datasets[1].data = closedIssues;
-  zoomedChart.update();
-}
-
-let mainChart = new Chart(document.getElementById("mainChart"), {
-  type: "line",
-  data: {
-    labels: [],
-    datasets: [
-      { label: "New", data: [], borderColor: "goldenrod", fill: false },
-      { label: "Open", data: [], borderColor: "orangered", fill: false },
-      { label: "Closed", data: [], borderColor: "forestgreen", fill: false },
-      { label: "Severe", data: [], borderColor: "crimson", borderDash: [5, 5], fill: false }
-    ]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      title: { display: true, text: "Issue Trends (Full)" }
+    function isNumber(v) {
+      return typeof v === "number";
     }
-  }
-});
 
-let zoomedChart = new Chart(document.getElementById("zoomedChart"), {
-  type: "line",
-  data: {
-    labels: [],
-    datasets: [
-      { label: "New", data: [], borderColor: "goldenrod", fill: false },
-      { label: "Closed", data: [], borderColor: "forestgreen", fill: false }
-    ]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      title: { display: true, text: "New vs Closed" }
+    function updateTableAndCharts() {
+      tbody.innerHTML = "";
+
+      const start = new Date(startDateInput.value || "2025-06-01");
+      const end = new Date(endDateInput.value || "2025-06-30");
+
+      const filtered = issueData.filter(d => {
+        const dt = new Date(d.date);
+        return dt >= start && dt <= end;
+      });
+
+      filtered.forEach(row => {
+        const tr = document.createElement("tr");
+        const severeStyle = isNumber(row.severe) ? 'style="background-color: #ffcccc; font-weight: bold;"' : '';
+              tr.innerHTML = `
+              <td>${row.date}</td>
+              <td>${row.new}</td>
+              <td>${row.open}</td>
+              <td>${row.closed}</td>
+              <td ${severeStyle}>${row.severe}</td>
+              `;
+        tbody.appendChild(tr);
+      });
+
+      const labels = filtered.map(d => d.date);
+      const openData = filtered.map(d => isNumber(d.open) ? d.open : null);
+      const newData = filtered.map(d => isNumber(d.new) ? d.new : null);
+      const closedData = filtered.map(d => isNumber(d.closed) ? d.closed : null);
+      const severeData = filtered.map(d => isNumber(d.severe) ? d.severe : null);
+
+      const sum = (arr) => arr.reduce((a, b) => isNumber(b) ? a + b : a, 0);
+      const lastOpen = [...openData].reverse().find(isNumber);
+      document.getElementById("totalNew").textContent = isNumber(lastOpen) ? lastOpen : "-";
+      document.getElementById("totalClosed").textContent = sum(closedData);
+      document.getElementById("percentResolved").textContent = openData.length ? Math.round((sum(closedData) / (sum(openData) + sum(closedData))) * 100) + "%" : "-";
+
+      mainChart.data.labels = labels;
+      mainChart.data.datasets[0].data = newData;
+      mainChart.data.datasets[1].data = openData;
+      mainChart.data.datasets[2].data = closedData;
+      mainChart.data.datasets[3].data = severeData;
+      mainChart.update();
+
+      zoomedChart.data.labels = labels;
+      zoomedChart.data.datasets[0].data = newData;
+      zoomedChart.data.datasets[1].data = closedData;
+      zoomedChart.update();
     }
-  }
-});
 
-startDateInput.value = "2025-06-05";
-endDateInput.value = "2025-06-30";
-startDateInput.addEventListener("change", updateTableAndCharts);
-endDateInput.addEventListener("change", updateTableAndCharts);
-updateTableAndCharts();
+    const mainChart = new Chart(document.getElementById("mainChart"), {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [
+          { label: "New", data: [], borderColor: "goldenrod", fill: false },
+          { label: "Open", data: [], borderColor: "orangered", fill: false },
+          { label: "Closed", data: [], borderColor: "forestgreen", fill: false },
+          { label: "Severe", data: [], borderColor: "crimson", borderDash: [5, 5], fill: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        devicePixelRatio: 2,
+        plugins: {
+          title: { display: true, text: "Issue Trends (All Statuses)" },
+          legend: { labels: { color: 'var(--text)' } }
+        },
+        scales: {
+          x: { ticks: { color: 'var(--text)' } },
+          y: { ticks: { color: 'var(--text)' } }
+        }
+      }
+    });
 
-document.getElementById("toggleTheme").addEventListener("click", () => {
-  const body = document.body;
-  const current = body.getAttribute("data-theme");
-  body.setAttribute("data-theme", current === "dark" ? "light" : "dark");
-});
-</script>
+    const zoomedChart = new Chart(document.getElementById("zoomedChart"), {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [
+          { label: "New", data: [], borderColor: "goldenrod", fill: false },
+          { label: "Closed", data: [], borderColor: "forestgreen", fill: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        devicePixelRatio: 2,
+        plugins: {
+          title: { display: true, text: "New vs Closed" },
+          legend: { labels: { color: 'var(--text)' } }
+        },
+        scales: {
+          x: { ticks: { color: 'var(--text)' } },
+          y: { ticks: { color: 'var(--text)' } }
+        }
+      }
+    });
 
+    document.getElementById("toggleTheme").addEventListener("click", () => {
+      const body = document.body;
+      const current = body.getAttribute("data-theme");
+      body.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+      updateTableAndCharts();
+    });
+
+    document.getElementById("exportPDF").addEventListener("click", () => {
+      const opt = { margin: 0.3, filename: 'issue_report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+      html2pdf().from(document.getElementById("reportContent")).set(opt).save();
+    });
+
+    startDateInput.value = "2025-06-05";
+    endDateInput.value = "2025-06-30";
+    startDateInput.addEventListener("change", updateTableAndCharts);
+    endDateInput.addEventListener("change", updateTableAndCharts);
+    updateTableAndCharts();
+  </script>
 </body>
 </html>
