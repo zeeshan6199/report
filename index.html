@@ -30,12 +30,17 @@
     }
     h2 {
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
+    }
+    .desc {
+      text-align: center;
+      font-size: 15px;
+      margin-bottom: 15px;
+      color: gray;
     }
     .controls {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
@@ -67,17 +72,18 @@
       font-size: 22px;
       font-weight: bold;
     }
-    .main-layout {
+    .flex-row {
       display: flex;
-      gap: 40px;
-      align-items: flex-start;
+      gap: 30px;
+      flex-wrap: wrap;
     }
     .table-container {
-      flex: 1.2;
-      min-width: 320px;
+      flex: 1;
+      min-width: 300px;
     }
     .chart-container {
       flex: 2;
+      min-width: 600px;
     }
     table {
       width: 100%;
@@ -93,16 +99,13 @@
       background: var(--header);
       color: #fff;
     }
-    tr:nth-child(even) {
-      background: rgba(0, 0, 0, 0.02);
-    }
     canvas {
       width: 100% !important;
       height: 300px !important;
       background: var(--card);
       padding: 10px;
       border-radius: 6px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     button {
       padding: 8px 14px;
@@ -120,10 +123,71 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
+
+    .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: var(--card);
+  color: var(--text);
+  padding: 25px;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-content h4 {
+  margin-top: 0;
+  font-size: 18px;
+  color: goldenrod;
+}
+
+.modal-content ul {
+  padding-left: 18px;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.modal-close {
+  text-align: right;
+  font-size: 18px;
+  cursor: pointer;
+  color: crimson;
+  font-weight: bold;
+  margin-bottom: -10px;
+}
+
+@keyframes fadeIn {
+  from { background: rgba(0, 0, 0, 0); }
+  to { background: rgba(0, 0, 0, 0.6); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
   </style>
 </head>
 <body data-theme="light">
   <h2>📊 Release Issue Tracking Report</h2>
+  <p class="desc">This report summarizes issues encountered during recent testing, visualized by type and date.</p>
+
   <div class="controls">
     <div>
       <label>From: <input type="date" id="startDate" /></label>
@@ -136,21 +200,12 @@
   </div>
 
   <div class="summary-cards">
-    <div class="card">
-      <h3>Total Open Issues</h3>
-      <p id="totalNew">-</p>
-    </div>
-    <div class="card">
-      <h3>Total Closed</h3>
-      <p id="totalClosed">-</p>
-    </div>
-    <div class="card">
-      <h3>% Resolved</h3>
-      <p id="percentResolved">-</p>
-    </div>
+    <div class="card"><h3>Total Open Issues</h3><p id="totalNew">-</p></div>
+    <div class="card"><h3>Total Closed</h3><p id="totalClosed">-</p></div>
+    <div class="card"><h3>% Resolved</h3><p id="percentResolved">-</p></div>
   </div>
 
-  <div id="reportContent" class="main-layout">
+  <div class="flex-row" id="reportContent">
     <div class="table-container">
       <table id="issueTable">
         <thead>
@@ -171,32 +226,38 @@
     </div>
   </div>
 
+  <div class="modal" id="severeModal">
+    <div class="modal-content">
+      <div class="modal-close" onclick="document.getElementById('severeModal').style.display='none'">✖</div>
+      <h4>Severe Issues</h4>
+      <ul id="severeList"></ul>
+    </div>
+  </div>
+
   <script>
     const issueData = [
       { date: "2025-06-09", new: 9, open: 20, closed: 4, severe: 7 },
-      ...Array.from({ length: 21 }, (_, i) => {
+      ...Array.from({length: 21}, (_, i) => {
         const d = new Date("2025-06-10");
         d.setDate(d.getDate() + i);
-        return {
-          date: d.toISOString().split("T")[0],
-          new: "-", open: "-", closed: "-", severe: "-"
-        };
+        return { date: d.toISOString().split('T')[0], new: "-", open: "-", closed: "-", severe: "-" };
       })
     ];
+
+    const severeDetailsByDate = {
+      "2025-06-09": ["Login button crashes", "Search not loading", "Report export fails"]
+    };
 
     const tbody = document.querySelector("#issueTable tbody");
     const startDateInput = document.getElementById("startDate");
     const endDateInput = document.getElementById("endDate");
 
-    function isNumber(v) {
-      return typeof v === "number";
-    }
+    function isNumber(v) { return typeof v === "number"; }
 
     function updateTableAndCharts() {
       tbody.innerHTML = "";
       const start = new Date(startDateInput.value || "2025-06-01");
       const end = new Date(endDateInput.value || "2025-06-30");
-
       const filtered = issueData.filter(d => {
         const dt = new Date(d.date);
         return dt >= start && dt <= end;
@@ -204,14 +265,16 @@
 
       filtered.forEach(row => {
         const tr = document.createElement("tr");
-        const severeStyle = isNumber(row.severe) ? 'style="background:#ff0000; font-weight: bold;"' : "";
+        const severeStyle = isNumber(row.severe) ? 'style="background-color: #ffcccc;"' : '';
+        const severeLink = isNumber(row.severe)
+          ? `<a href="#" onclick="showSevere('${row.date}')"><strong>${row.severe}</strong></a>`
+          : row.severe;
         tr.innerHTML = `
           <td>${row.date}</td>
           <td>${row.new}</td>
           <td>${row.open}</td>
           <td>${row.closed}</td>
-          <td ${severeStyle}>${row.severe}</td>
-        `;
+          <td ${severeStyle}>${severeLink}</td>`;
         tbody.appendChild(tr);
       });
 
@@ -222,10 +285,9 @@
       const severeData = filtered.map(d => isNumber(d.severe) ? d.severe : null);
 
       const sum = arr => arr.reduce((a, b) => isNumber(b) ? a + b : a, 0);
-      const lastOpen = [...openData].reverse().find(isNumber);
-      document.getElementById("totalNew").textContent = isNumber(lastOpen) ? lastOpen : "-";
+      document.getElementById("totalNew").textContent = sum(openData);
       document.getElementById("totalClosed").textContent = sum(closedData);
-      document.getElementById("percentResolved").textContent = (sum(openData) + sum(closedData)) > 0
+      document.getElementById("percentResolved").textContent = openData.length
         ? Math.round((sum(closedData) / (sum(openData) + sum(closedData))) * 100) + "%"
         : "-";
 
@@ -242,21 +304,28 @@
       zoomedChart.update();
     }
 
+    function showSevere(date) {
+      const list = severeDetailsByDate[date] || ["No details available"];
+      const ul = document.getElementById("severeList");
+      ul.innerHTML = list.map(item => `<li>${item}</li>`).join("");
+      document.getElementById("severeModal").style.display = "flex";
+    }
+
     const mainChart = new Chart(document.getElementById("mainChart"), {
       type: "line",
       data: {
         labels: [],
         datasets: [
-          { label: "New", data: [], borderColor: "#f39c12", fill: false },
-          { label: "Open", data: [], borderColor: "#e67e22", fill: false },
-          { label: "Closed", data: [], borderColor: "#2ecc71", fill: false },
-          { label: "Severe", data: [], borderColor: "#e74c3c", borderDash: [5, 5], fill: false }
+          { label: "New", data: [], borderColor: "goldenrod", fill: false },
+          { label: "Open", data: [], borderColor: "orangered", fill: false },
+          { label: "Closed", data: [], borderColor: "forestgreen", fill: false },
+          { label: "Severe", data: [], borderColor: "crimson", borderDash: [5, 5], fill: false }
         ]
       },
       options: {
         responsive: true,
         plugins: {
-          title: { display: true, text: "Issue Trends (All Statuses)" },
+          title: { display: true, text: "Issue Trends (All Types)" },
           legend: { labels: { color: 'var(--text)' } }
         },
         scales: {
@@ -271,8 +340,8 @@
       data: {
         labels: [],
         datasets: [
-          { label: "New", data: [], borderColor: "#f39c12", fill: false },
-          { label: "Closed", data: [], borderColor: "#2ecc71", fill: false }
+          { label: "New", data: [], borderColor: "goldenrod", fill: false },
+          { label: "Closed", data: [], borderColor: "forestgreen", fill: false }
         ]
       },
       options: {
@@ -296,14 +365,13 @@
     });
 
     document.getElementById("exportPDF").addEventListener("click", () => {
-      const opt = {
-        margin: 0.3,
+      html2pdf().from(document.getElementById("reportContent")).set({
+        margin: 0.4,
         filename: 'issue_report.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-      };
-      html2pdf().from(document.getElementById("reportContent")).set(opt).save();
+      }).save();
     });
 
     startDateInput.value = "2025-06-05";
