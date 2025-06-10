@@ -67,18 +67,17 @@
       font-size: 22px;
       font-weight: bold;
     }
-    .container {
+    .main-layout {
       display: flex;
-      flex-wrap: wrap;
       gap: 40px;
+      align-items: flex-start;
     }
     .table-container {
-      flex: 1;
-      min-width: 300px;
+      flex: 1.2;
+      min-width: 320px;
     }
     .chart-container {
       flex: 2;
-      min-width: 600px;
     }
     table {
       width: 100%;
@@ -103,7 +102,7 @@
       background: var(--card);
       padding: 10px;
       border-radius: 6px;
-      margin-top: 20px;
+      margin-bottom: 30px;
     }
     button {
       padding: 8px 14px;
@@ -151,36 +150,37 @@
     </div>
   </div>
 
-  <div id="reportContent">
-    <div class="container">
-      <div class="table-container">
-        <table id="issueTable">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>New</th>
-              <th>Open</th>
-              <th>Closed</th>
-              <th>Severe</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="chart-container">
-        <canvas id="mainChart"></canvas>
-        <canvas id="zoomedChart"></canvas>
-      </div>
+  <div id="reportContent" class="main-layout">
+    <div class="table-container">
+      <table id="issueTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>New</th>
+            <th>Open</th>
+            <th>Closed</th>
+            <th>Severe</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="chart-container">
+      <canvas id="mainChart"></canvas>
+      <canvas id="zoomedChart"></canvas>
     </div>
   </div>
 
   <script>
     const issueData = [
-      { date: "2025-06-09", new: 9, open:20, closed: 4, severe: 7 },
-      ...Array.from({length: 21}, (_, i) => {
+      { date: "2025-06-09", new: 9, open: 20, closed: 4, severe: 7 },
+      ...Array.from({ length: 21 }, (_, i) => {
         const d = new Date("2025-06-10");
         d.setDate(d.getDate() + i);
-        return { date: d.toISOString().split('T')[0], new: "-", open: "-", closed: "-", severe: "-" };
+        return {
+          date: d.toISOString().split("T")[0],
+          new: "-", open: "-", closed: "-", severe: "-"
+        };
       })
     ];
 
@@ -194,7 +194,6 @@
 
     function updateTableAndCharts() {
       tbody.innerHTML = "";
-
       const start = new Date(startDateInput.value || "2025-06-01");
       const end = new Date(endDateInput.value || "2025-06-30");
 
@@ -205,14 +204,14 @@
 
       filtered.forEach(row => {
         const tr = document.createElement("tr");
-        const severeStyle = isNumber(row.severe) ? 'style="background-color: #ffcccc; font-weight: bold;"' : '';
-              tr.innerHTML = `
-              <td>${row.date}</td>
-              <td>${row.new}</td>
-              <td>${row.open}</td>
-              <td>${row.closed}</td>
-              <td ${severeStyle}>${row.severe}</td>
-              `;
+        const severeStyle = isNumber(row.severe) ? 'style="background:#ff0000; font-weight: bold;"' : "";
+        tr.innerHTML = `
+          <td>${row.date}</td>
+          <td>${row.new}</td>
+          <td>${row.open}</td>
+          <td>${row.closed}</td>
+          <td ${severeStyle}>${row.severe}</td>
+        `;
         tbody.appendChild(tr);
       });
 
@@ -222,11 +221,13 @@
       const closedData = filtered.map(d => isNumber(d.closed) ? d.closed : null);
       const severeData = filtered.map(d => isNumber(d.severe) ? d.severe : null);
 
-      const sum = (arr) => arr.reduce((a, b) => isNumber(b) ? a + b : a, 0);
+      const sum = arr => arr.reduce((a, b) => isNumber(b) ? a + b : a, 0);
       const lastOpen = [...openData].reverse().find(isNumber);
       document.getElementById("totalNew").textContent = isNumber(lastOpen) ? lastOpen : "-";
       document.getElementById("totalClosed").textContent = sum(closedData);
-      document.getElementById("percentResolved").textContent = openData.length ? Math.round((sum(closedData) / (sum(openData) + sum(closedData))) * 100) + "%" : "-";
+      document.getElementById("percentResolved").textContent = (sum(openData) + sum(closedData)) > 0
+        ? Math.round((sum(closedData) / (sum(openData) + sum(closedData))) * 100) + "%"
+        : "-";
 
       mainChart.data.labels = labels;
       mainChart.data.datasets[0].data = newData;
@@ -246,15 +247,14 @@
       data: {
         labels: [],
         datasets: [
-          { label: "New", data: [], borderColor: "goldenrod", fill: false },
-          { label: "Open", data: [], borderColor: "orangered", fill: false },
-          { label: "Closed", data: [], borderColor: "forestgreen", fill: false },
-          { label: "Severe", data: [], borderColor: "crimson", borderDash: [5, 5], fill: false }
+          { label: "New", data: [], borderColor: "#f39c12", fill: false },
+          { label: "Open", data: [], borderColor: "#e67e22", fill: false },
+          { label: "Closed", data: [], borderColor: "#2ecc71", fill: false },
+          { label: "Severe", data: [], borderColor: "#e74c3c", borderDash: [5, 5], fill: false }
         ]
       },
       options: {
         responsive: true,
-        devicePixelRatio: 2,
         plugins: {
           title: { display: true, text: "Issue Trends (All Statuses)" },
           legend: { labels: { color: 'var(--text)' } }
@@ -271,13 +271,12 @@
       data: {
         labels: [],
         datasets: [
-          { label: "New", data: [], borderColor: "goldenrod", fill: false },
-          { label: "Closed", data: [], borderColor: "forestgreen", fill: false }
+          { label: "New", data: [], borderColor: "#f39c12", fill: false },
+          { label: "Closed", data: [], borderColor: "#2ecc71", fill: false }
         ]
       },
       options: {
         responsive: true,
-        devicePixelRatio: 2,
         plugins: {
           title: { display: true, text: "New vs Closed" },
           legend: { labels: { color: 'var(--text)' } }
@@ -297,7 +296,13 @@
     });
 
     document.getElementById("exportPDF").addEventListener("click", () => {
-      const opt = { margin: 0.3, filename: 'issue_report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+      const opt = {
+        margin: 0.3,
+        filename: 'issue_report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+      };
       html2pdf().from(document.getElementById("reportContent")).set(opt).save();
     });
 
