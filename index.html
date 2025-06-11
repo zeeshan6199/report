@@ -290,7 +290,6 @@
       const latestOpen = [...openData].reverse().find(v => isNumber(v));
 document.getElementById("totalNew").textContent = latestOpen ?? "-";
       document.getElementById("totalClosed").textContent = sum(closedData);
-      const latestOpen = [...openData].reverse().find(v => isNumber(v));
 const closedSum = sum(closedData);
 document.getElementById("percentResolved").textContent = openData.length
   ? Math.round((sum(closedData) / (sum(openData) + sum(closedData))) * 100) + "%"
