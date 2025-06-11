@@ -290,9 +290,14 @@
       const latestOpen = [...openData].reverse().find(v => isNumber(v));
 document.getElementById("totalNew").textContent = latestOpen ?? "-";
       document.getElementById("totalClosed").textContent = sum(closedData);
-      document.getElementById("percentResolved").textContent = openData.length
-        ? Math.round((sum(closedData) / (sum(openData) + sum(closedData))) * 100) + "%"
-        : "-";
+      const latestOpen = [...openData].reverse().find(v => isNumber(v));
+const closedSum = sum(closedData);
+const resolvedPercent = latestOpen !== undefined
+  ? Math.round((closedSum / (closedSum + latestOpen)) * 100)
+  : "-";
+
+document.getElementById("percentResolved").textContent = resolvedPercent + "%";
+
 
       mainChart.data.labels = labels;
       mainChart.data.datasets[0].data = newData;
