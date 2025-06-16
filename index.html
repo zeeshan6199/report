@@ -127,39 +127,70 @@
     .collapsible-section {
   background: var(--card);
   color: var(--text);
-  padding: 15px 20px;
   border-radius: 8px;
-  margin-top: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-top: 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
 }
 
 .collapsible-toggle {
-  background: none;
+  background: var(--card);
   border: none;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
   cursor: pointer;
   color: goldenrod;
   width: 100%;
+  padding: 14px 20px;
   text-align: left;
-  padding: 10px 0;
+  border-bottom: 1px solid var(--table-border);
+  transition: background 0.3s;
 }
 
 .collapsible-toggle:hover {
-  text-decoration: underline;
+  background: rgba(255, 215, 0, 0.05);
 }
 
 .collapsible-content {
   display: none;
-  margin-top: 10px;
-  animation: slideDown 0.3s ease;
+  animation: fadeSlide 0.3s ease;
+  padding: 10px 20px 20px;
 }
 
-@keyframes slideDown {
+@keyframes fadeSlide {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+.pending-box {
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.pending-intro {
+  margin-top: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: gray;
+}
+
+.pending-list {
+  padding-left: 20px;
+  margin: 10px 0 10px 0;
+  line-height: 1.7;
+}
+
+.pending-list ul {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.pending-note {
+  font-size: 13px;
+  color: #999;
+  margin-top: 10px;
+}
 
     .modal {
   position: fixed;
@@ -262,29 +293,35 @@
       <canvas id="zoomedChart"></canvas>
     </div>
     <div class="collapsible-section">
-      <button class="collapsible-toggle" onclick="togglePending()">🧪 Pending Test Coverage ▼</button>
+      <button class="collapsible-toggle" onclick="togglePending()">
+        🧪 Pending Test Coverage
+        <span id="toggleIcon" style="float: right;">▼</span>
+      </button>
       <div class="collapsible-content" id="pendingCoverage">
-        <p>This section highlights features that are not yet covered by testing. Some are in progress, while others remain to be verified or are partially tested:</p>
-        <ul style="line-height: 1.7; padding-left: 20px;">
-          <li>SCIP</li>
-          <li>AI Chatbot</li>
-          <li>Supplier Email AI <em>(in progress)</em></li>
-          <li>Reports:
-            <ul>
-              <li>Battery Report</li>
-              <li>SCIP Report</li>
-            </ul>
-          </li>
-          <li>Mass Upload </li>
-          <li>Bulk Copy BOS</li>
-          <li>Role-Specific Access Testing</li>
-          <li>RMI Priority Testing</li>
-          <li>Specification Data Import</li>
-          <li>Copy Composition From</li>
-        </ul>
-        <p><em>Note: Some of these items may be partially tested, but their status is uncertain and requires revalidation.</em></p>
+        <div class="pending-box">
+          <p class="pending-intro">These are items not yet fully covered by testing. Some are in progress, some remain untested, and others are partially verified but require confirmation:</p>
+          <ul class="pending-list">
+            <li>SCIP</li>
+            <li>AI Chatbot</li>
+            <li>Supplier Email AI <em>(in progress)</em></li>
+            <li>Reports:
+              <ul>
+                <li>Battery Report</li>
+                <li>SCIP Report</li>
+              </ul>
+            </li>
+            <li>Mass Upload</li>
+            <li>Bulk Copy BOS</li>
+            <li>Role-Specific Access Testing</li>
+            <li>RMI Priority Testing</li>
+            <li>Specification Data Import</li>
+            <li>Copy Composition From</li>
+          </ul>
+          <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and requires revalidation.</em></p>
+        </div>
       </div>
     </div>
+    
     
   </div>
 
@@ -329,13 +366,13 @@
 
     function togglePending() {
   const content = document.getElementById("pendingCoverage");
-  const button = document.querySelector(".collapsible-toggle");
+  const icon = document.getElementById("toggleIcon");
   const isVisible = content.style.display === "block";
+
   content.style.display = isVisible ? "none" : "block";
-  button.innerHTML = isVisible
-    ? "🧪 Pending Test Coverage ▼"
-    : "🧪 Pending Test Coverage ▲";
+  icon.textContent = isVisible ? "▼" : "▲";
 }
+
 
     function updateTableAndCharts() {
       tbody.innerHTML = "";
@@ -417,9 +454,14 @@ document.getElementById("percentResolved").textContent = resolvedPercent + "%";
           legend: { labels: { color: 'var(--text)' } }
         },
         scales: {
-          x: { ticks: { color: 'var(--text)' } },
-          y: { ticks: { color: 'var(--text)' } }
-        }
+            y: {
+              beginAtZero: true,
+              ticks: { color: 'var(--text)' }
+            },
+            x: {
+              ticks: { color: 'var(--text)' }
+            }
+          }
       }
     });
 
@@ -439,9 +481,15 @@ document.getElementById("percentResolved").textContent = resolvedPercent + "%";
           legend: { labels: { color: 'var(--text)' } }
         },
         scales: {
-          x: { ticks: { color: 'var(--text)' } },
-          y: { ticks: { color: 'var(--text)' } }
-        }
+  y: {
+    beginAtZero: true,
+    ticks: { color: 'var(--text)' }
+  },
+  x: {
+    ticks: { color: 'var(--text)' }
+  }
+}
+
       }
     });
 
