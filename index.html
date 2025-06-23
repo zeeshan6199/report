@@ -340,8 +340,10 @@
       { date: "2025-06-11", new: 8, open:12, closed:10, severe: 4 },
       { date: "2025-06-12", new: 8, open:16, closed:4, severe: 6 },
       { date: "2025-06-16", new: 15, open:8, closed:7, severe:2 },
+      { date: "2025-06-20", new: 4, open:8, closed:8, severe:4 },
+      { date: "2025-06-23", new: 5, open:9, closed:3, severe:'-'},
       ...Array.from({length: 18}, (_, i) => {
-        const d = new Date("2025-06-17");
+        const d = new Date("2025-06-24");
         d.setDate(d.getDate() + i);
         return { date: d.toISOString().split('T')[0], new: "-", open: "-", closed: "-", severe: "-" };
       })
