@@ -345,7 +345,7 @@
       { date: "2025-06-23", new: 6, open:10, closed:3, severe:'-'},
       { date: "2025-06-24", new: 2, open:8, closed:6, severe:'-'},
       { date: "2025-06-25", new: 3, open:7, closed:4, severe:'-'},
-{ date: "2025-06-26", new: 3, open:10, closed:2, severe:'-'},
+{ date: "2025-06-26", new: 3, open:10, closed:2, severe:5},
       ...Array.from({length: 18}, (_, i) => {
         const d = new Date("2025-06-27");
         d.setDate(d.getDate() + i);
@@ -359,6 +359,7 @@
       "2025-06-11": ["Partial declaration , incorrect calculated compliance value appearing.", "SCIP attributes value appearing as 'undefined' throughout the system.", "[Supplier Email AI] No reminder email back to supplier mentioning file wasn't uploaded and retry is needed.","Incorrect effective from/effective till values on copy declaration to block."],
       "2025-06-12": ["Partial declaration , incorrect calculated compliance value appearing.", "[TEST] 500 Unexpected error occurs on giving scip attributes when checkbox is selected.", "All Scip attributes on subpart are not stored correctly. Safe use , disassembly instructions don't remain.","Incorrect effective from/effective till values on copy declaration to block.","[TEST] SCIP information is not updated please see attached video.","[Supplier email AI] No reminder email when supplier has given data for some affected objects and missing some."],
       "2025-06-16": ["Sorting not working on date columns in different categories search results","MFR SCIP data upload format issue"],
+      "2025-06-26": ["[TEST] Copy declaration to functionality major issues.","[TEST] Appearance of UNDEFINED in Copy declaration To block.","[TEST] When parent specification is created after stanadlone specification or viceversa error occurs.","[Mass Upload] CAS number/substances given in file not imported on the declaration.","[Mass Upload] Feature doesn't handle null part type case in which all child specs become applicable."],
       
       
     };
