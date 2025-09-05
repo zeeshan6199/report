@@ -265,22 +265,42 @@
     </div>
 
     <!-- Updated Pending Test Coverage section without toggle -->
-    <div class="collapsible-section">
-      <h3 style="color: goldenrod; padding: 14px 20px; margin: 0;">
-        🧪 Pending Test Coverage
-      </h3>
-      <div class="pending-box">
-        <p class="pending-intro">These are items not yet fully covered by testing. Some are in progress, some remain untested, and others are partially verified but require confirmation:</p>
-        <ul class="pending-list">
-          <li>Bulk Item Screens</li>
-          <li>XML Intermatic files support</li>
-          <li>Adhoc Things</li>
-          <li>Few new redwood UI screens recently deployed</li>
-          <li>Configurable Statuses</li>
-        </ul>
-        <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and requires revalidation.</em></p>
-      </div>
-    </div>
+    <!-- 🔥 Open Important Bugs section -->
+<div class="collapsible-section">
+  <h3 style="color: crimson; padding: 14px 20px; margin: 0;">
+    🐞 Open Important Bugs
+  </h3>
+  <div class="pending-box">
+    <p class="pending-intro">These bugs are high-priority and remain unresolved. Immediate attention is required:</p>
+    <ul class="pending-list">
+      <li>Login failure in Safari on macOS</li>
+      <li>Data loss during multi-tab session switching</li>
+      <li>Critical crash in Item Editor when saving with empty fields</li>
+      <li>Performance degradation on bulk upload for >500 records</li>
+      <li>Incorrect role-based access in new UI sections</li>
+    </ul>
+    <p class="pending-note"><em>Note: This list is updated based on severity and impact reported by QA and stakeholders.</em></p>
+  </div>
+</div>
+
+<!-- 🧪 Pending Test Coverage section moved below -->
+<div class="collapsible-section">
+  <h3 style="color: goldenrod; padding: 14px 20px; margin: 0;">
+    🧪 Pending Test Coverage
+  </h3>
+  <div class="pending-box">
+    <p class="pending-intro">These are items not yet fully covered by testing. Some are in progress, some remain untested, and others are partially verified but require confirmation:</p>
+    <ul class="pending-list">
+      <li>Bulk Item Screens</li>
+      <li>XML Intermatic files support</li>
+      <li>Adhoc Things</li>
+      <li>Few new redwood UI screens recently deployed</li>
+      <li>Configurable Statuses</li>
+    </ul>
+    <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and requires revalidation.</em></p>
+  </div>
+</div>
+
 
   </div>
 
@@ -358,6 +378,7 @@
   </script>
 </body>
 </html>
+
 
 
 
