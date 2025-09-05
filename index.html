@@ -13,6 +13,7 @@
       --header: #343a40;
       --table-border: #ddd;
     }
+
     [data-theme="dark"] {
       --bg: #1e1e2f;
       --card: #2c2c3e;
@@ -20,6 +21,7 @@
       --header: #444;
       --table-border: #444;
     }
+
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
@@ -28,25 +30,30 @@
       padding: 20px;
       transition: background 0.3s ease, color 0.3s ease;
     }
+
     h2 {
       text-align: center;
       margin-bottom: 5px;
     }
+
     .desc {
       text-align: center;
       font-size: 15px;
       margin-bottom: 15px;
       color: gray;
     }
+
     .controls {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
+
     .controls > * {
       margin: 5px 10px;
     }
+
     .summary-cards {
       display: flex;
       gap: 20px;
@@ -54,6 +61,7 @@
       flex-wrap: wrap;
       margin-bottom: 20px;
     }
+
     .card {
       background: var(--card);
       padding: 15px 20px;
@@ -62,43 +70,52 @@
       min-width: 180px;
       text-align: center;
     }
+
     .card h3 {
       margin: 0;
       font-size: 16px;
       color: goldenrod;
     }
+
     .card p {
       margin: 5px 0 0;
       font-size: 22px;
       font-weight: bold;
     }
+
     .flex-row {
       display: flex;
       gap: 30px;
       flex-wrap: wrap;
     }
+
     .table-container {
       flex: 1;
       min-width: 300px;
     }
+
     .chart-container {
       flex: 2;
       min-width: 600px;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       background: var(--card);
     }
+
     th, td {
       padding: 10px;
       text-align: center;
       border: 1px solid var(--table-border);
     }
+
     th {
       background: var(--header);
       color: #fff;
     }
+
     canvas {
       width: 100% !important;
       height: 300px !important;
@@ -107,6 +124,7 @@
       border-radius: 6px;
       margin-bottom: 20px;
     }
+
     button {
       padding: 8px 14px;
       border: none;
@@ -115,9 +133,11 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     button:hover {
       background: #23272b;
     }
+
     input[type="date"] {
       padding: 6px 10px;
       border-radius: 5px;
@@ -130,10 +150,7 @@
       border-radius: 8px;
       margin-top: 25px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      /* overflow: hidden; Removed so content is always visible */
     }
-
-    /* Removed .collapsible-toggle and .collapsible-content styles as no toggling */
 
     .pending-box {
       background: var(--bg);
@@ -150,13 +167,8 @@
 
     .pending-list {
       padding-left: 20px;
-      margin: 10px 0 10px 0;
+      margin: 10px 0;
       line-height: 1.7;
-    }
-
-    .pending-list ul {
-      margin-top: 5px;
-      margin-bottom: 10px;
     }
 
     .pending-note {
@@ -164,65 +176,6 @@
       color: #999;
       margin-top: 10px;
     }
-
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-content {
-      background: var(--card);
-      color: var(--text);
-      padding: 25px;
-      border-radius: 12px;
-      max-width: 420px;
-      width: 90%;
-      max-height: 80%;
-      overflow-y: auto;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-      animation: slideUp 0.3s ease;
-    }
-
-    .modal-content h4 {
-      margin-top: 0;
-      font-size: 18px;
-      color: goldenrod;
-    }
-
-    .modal-content ul {
-      padding-left: 18px;
-      line-height: 1.6;
-      margin: 10px 0;
-    }
-
-    .modal-close {
-      text-align: right;
-      font-size: 18px;
-      cursor: pointer;
-      color: crimson;
-      font-weight: bold;
-      margin-bottom: -10px;
-    }
-
-    @keyframes fadeIn {
-      from { background: rgba(0, 0, 0, 0); }
-      to { background: rgba(0, 0, 0, 0.6); }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
   </style>
 </head>
 <body data-theme="light">
@@ -249,96 +202,86 @@
   <div class="flex-row" id="reportContent">
     <div class="table-container">
       <table id="issueTable">
-         <thead>
-            <tr>
-              <th>Date</th>
-              <th title="🆕 New Issues: Number of issues discovered/logged on this specific date. These are unique to the date.">New</th>
-              <th title="✅ Closed Issues: Issues resolved or closed *on this specific date*. Unique to the date.">Closed</th>
-            </tr>
-         </thead>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th title="🆕 New Issues: Number of issues discovered/logged on this specific date.">New</th>
+            <th title="✅ Closed Issues: Number of issues closed on this specific date.">Closed</th>
+          </tr>
+        </thead>
         <tbody></tbody>
       </table>
     </div>
+
     <div class="chart-container">
       <canvas id="mainChart"></canvas>
-      <canvas id="zoomedChart"></canvas>
     </div>
 
-    <!-- Updated Pending Test Coverage section without toggle -->
-    <!-- 🔥 Open Important Bugs section -->
-<div class="collapsible-section">
-  <h3 style="color: crimson; padding: 14px 20px; margin: 0;">
-    🐞 Open Important Bugs
-  </h3>
-  <div class="pending-box">
-    <p class="pending-intro">These bugs are high-priority and remain unresolved. Immediate attention is required:</p>
-    <ul class="pending-list">
-      <li>	[TEST] 500 backend eror on Excel file import flow .</li>
-      <li>[TEST] COC upload flow isn't working , user uploads a file but it never appears on UI.</li>
-      <li>[TEST] Compute Compliance from composition isn't working , error occured appears.</li>
-      <li>	[Bulk Copy BOS Revamp] For a valid scenario , destination mpn didn't get data despite process showing it was complete.</li>
-      <li>[Configurable Status ] Updated compliance status display names not appearing in search results.</li>
-    </ul>
-    <p class="pending-note"><em>Note: This list is updated based on severity and impact.</em></p>
-  </div>
-</div>
+    <div class="collapsible-section">
+      <h3 style="color: crimson; padding: 14px 20px; margin: 0;">🐞 Open Important Bugs</h3>
+      <div class="pending-box">
+        <p class="pending-intro">These bugs are high-priority and remain unresolved. Immediate attention is required:</p>
+        <ul class="pending-list">
+          <li>[TEST] 500 backend error on Excel file import flow.</li>
+          <li>[TEST] COC upload flow isn't working — file never appears on UI.</li>
+          <li>[TEST] Compute Compliance from composition errors out.</li>
+          <li>[Bulk Copy BOS Revamp] Data not copied to destination MPN despite process showing complete.</li>
+          <li>[Configurable Status] Updated compliance status names not appearing in search.</li>
+        </ul>
+        <p class="pending-note"><em>Note: This list is updated based on severity and impact.</em></p>
+      </div>
+    </div>
 
-<!-- 🧪 Pending Test Coverage section moved below -->
-<div class="collapsible-section">
-  <h3 style="color: goldenrod; padding: 14px 20px; margin: 0;">
-    🧪 Pending Test Coverage
-  </h3>
-  <div class="pending-box">
-    <p class="pending-intro">These are items not yet fully covered by testing. Some are in progress, some remain untested, and others are partially verified but require confirmation:</p>
-    <ul class="pending-list">
-      <li>Bulk Item Screens</li>
-      <li>XML Intermatic files support</li>
-      <li>Adhoc Things</li>
-      <li>Few new redwood UI screens recently deployed</li>
-      <li>Configurable Statuses</li>
-    </ul>
-    <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and requires revalidation.</em></p>
-  </div>
-</div>
-
-
+    <div class="collapsible-section">
+      <h3 style="color: goldenrod; padding: 14px 20px; margin: 0;">🧪 Pending Test Coverage</h3>
+      <div class="pending-box">
+        <p class="pending-intro">These are items not yet fully covered by testing. Some are in progress, some remain untested, and others are partially verified:</p>
+        <ul class="pending-list">
+          <li>Bulk Item Screens</li>
+          <li>XML Intermatic files support</li>
+          <li>Adhoc Things</li>
+          <li>Redwood UI screens (newly deployed)</li>
+          <li>Configurable Statuses</li>
+        </ul>
+        <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and needs revalidation.</em></p>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Sample dummy data for table and chart - replace with real data as needed
+    // Dummy data
     const data = [
-      { date: "2025-09-03", new: 10,closed: 1},
-      { date: "2025-09-04", new: 3,closed: 1},
-      { date: "2025-09-05", new: 7,closed:7},
+      { date: "2025-09-03", new: 10, closed: 1 },
+      { date: "2025-09-04", new: 3, closed: 1 },
+      { date: "2025-09-05", new: 7, closed: 7 },
     ];
 
     const issueTableBody = document.querySelector("#issueTable tbody");
     const totalNew = document.getElementById("totalNew");
     const totalClosed = document.getElementById("totalClosed");
- 
 
-    function renderTable(data) {
-        issueTableBody.innerHTML = "";
-        let sumNew = 0, sumClosed = 0;
-        data.forEach(row => {
-          sumNew += row.new;
-          sumClosed += row.closed;
-          issueTableBody.innerHTML += `
-            <tr>
-              <td>${row.date}</td>
-              <td>${row.new}</td>
-              <td>${row.closed}</td>
-            </tr>
-          `;
-        });
-        totalNew.textContent =13;
-        totalClosed.textContent = sumClosed;
-      }
+    function renderTable(dataset) {
+      issueTableBody.innerHTML = "";
+      let sumNew = 0, sumClosed = 0;
+      dataset.forEach(row => {
+        sumNew += row.new;
+        sumClosed += row.closed;
+        issueTableBody.innerHTML += `
+          <tr>
+            <td>${row.date}</td>
+            <td>${row.new}</td>
+            <td>${row.closed}</td>
+          </tr>
+        `;
+      });
+      totalNew.textContent = sumNew;
+      totalClosed.textContent = sumClosed;
+    }
 
-
+    // Initial table render
     renderTable(data);
 
-    // Chart code simplified - you can add your actual chart drawing here
+    // Chart setup
     const ctxMain = document.getElementById("mainChart").getContext("2d");
     const mainChart = new Chart(ctxMain, {
       type: "line",
@@ -350,37 +293,55 @@
             data: data.map(d => d.new),
             borderColor: "goldenrod",
             fill: false,
-            tension: 0.2,
+            tension: 0.3
           },
           {
             label: "Closed Issues",
             data: data.map(d => d.closed),
             borderColor: "green",
             fill: false,
-            tension: 0.2,
-          },
-        ],
+            tension: 0.3
+          }
+        ]
       },
       options: {
         responsive: true,
         plugins: {
-          legend: { position: "top" },
+          legend: { position: "top" }
         },
         scales: {
-          y: { beginAtZero: true },
-        },
-      },
+          y: { beginAtZero: true }
+        }
+      }
     });
 
+    // Theme toggle
+    document.getElementById("toggleTheme").addEventListener("click", () => {
+      const body = document.body;
+      const theme = body.getAttribute("data-theme");
+      body.setAttribute("data-theme", theme === "dark" ? "light" : "dark");
+    });
 
-    // Remove any togglePending() function calls or definitions from previous versions
+    // Date filter logic
+    document.getElementById("startDate").addEventListener("change", filterDataByDate);
+    document.getElementById("endDate").addEventListener("change", filterDataByDate);
 
+    function filterDataByDate() {
+      const start = document.getElementById("startDate").value;
+      const end = document.getElementById("endDate").value;
+
+      const filtered = data.filter(entry => {
+        return (!start || entry.date >= start) && (!end || entry.date <= end);
+      });
+
+      renderTable(filtered);
+
+      // Update chart
+      mainChart.data.labels = filtered.map(d => d.date);
+      mainChart.data.datasets[0].data = filtered.map(d => d.new);
+      mainChart.data.datasets[1].data = filtered.map(d => d.closed);
+      mainChart.update();
+    }
   </script>
 </body>
 </html>
-
-
-
-
-
-
