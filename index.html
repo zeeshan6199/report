@@ -249,13 +249,13 @@
   <div class="flex-row" id="reportContent">
     <div class="table-container">
       <table id="issueTable">
-       <thead>
-        <tr>
-          <th>Date</th>
-          <th title="🆕 New Issues: Number of issues discovered/logged on this specific date. These are unique to the date.">New</th>
-          <th title="✅ Closed Issues: Issues resolved or closed *on this specific date*. Unique to the date.">Closed</th>
-        </tr>
-      </thead>
+         <thead>
+            <tr>
+              <th>Date</th>
+              <th title="🆕 New Issues: Number of issues discovered/logged on this specific date. These are unique to the date.">New</th>
+              <th title="✅ Closed Issues: Issues resolved or closed *on this specific date*. Unique to the date.">Closed</th>
+            </tr>
+         </thead>
         <tbody></tbody>
       </table>
     </div>
@@ -298,24 +298,23 @@
  
 
     function renderTable(data) {
-      issueTableBody.innerHTML = "";
-      let sumNew = 0, sumClosed = 0;
-      data.forEach(row => {
-        sumNew += row.new;
-        sumClosed += row.closed;
-        issueTableBody.innerHTML += `
-          <tr>
-            <td>${row.date}</td>
-            <td>${row.new}</td>
-            <td>${row.open}</td>
-            <td>${row.closed}</td>
-            <td>${row.severe}</td>
-          </tr>
-        `;
-      });
-      totalNew.textContent = 13;
-      totalClosed.textContent = sumClosed;
-    }
+        issueTableBody.innerHTML = "";
+        let sumNew = 0, sumClosed = 0;
+        data.forEach(row => {
+          sumNew += row.new;
+          sumClosed += row.closed;
+          issueTableBody.innerHTML += `
+            <tr>
+              <td>${row.date}</td>
+              <td>${row.new}</td>
+              <td>${row.closed}</td>
+            </tr>
+          `;
+        });
+        totalNew.textContent = sumNew;
+        totalClosed.textContent = sumClosed;
+      }
+
 
     renderTable(data);
 
@@ -330,13 +329,6 @@
             label: "New Issues",
             data: data.map(d => d.new),
             borderColor: "goldenrod",
-            fill: false,
-            tension: 0.2,
-          },
-          {
-            label: "Open Issues",
-            data: data.map(d => d.open),
-            borderColor: "darkorange",
             fill: false,
             tension: 0.2,
           },
@@ -360,10 +352,12 @@
       },
     });
 
+
     // Remove any togglePending() function calls or definitions from previous versions
 
   </script>
 </body>
 </html>
+
 
 
