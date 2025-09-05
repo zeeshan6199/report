@@ -328,17 +328,6 @@
     const issueData = [
       { date: "2025-09-03", new: 10, open: 13, closed: 1, severe: - },
       { date: "2025-09-04", new: 3, open: 16, closed: 1, severe: - },
-      ...Array.from({ length: 26 }, (_, i) => {
-        const d = new Date("2025-09-05");
-        d.setDate(d.getDate() + i);
-        return {
-          date: d.toISOString().split('T')[0],
-          new: "-",
-          open: "-",
-          closed: "-",
-          severe: "-"
-        };
-      })
     ];
 
 
@@ -517,6 +506,7 @@ document.getElementById("percentResolved").textContent = resolvedPercent + "%";
   </script>
 </body>
 </html>
+
 
 
 
