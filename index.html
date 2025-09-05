@@ -293,7 +293,7 @@
     ];
 
     const issueTableBody = document.querySelector("#issueTable tbody");
-    const totalNew = 13;
+    const totalNew = document.getElementById("totalNew");
     const totalClosed = document.getElementById("totalClosed");
  
 
@@ -311,7 +311,7 @@
             </tr>
           `;
         });
-        totalNew.textContent = sumNew;
+        totalNew.textContent =13;
         totalClosed.textContent = sumClosed;
       }
 
