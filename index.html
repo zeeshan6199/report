@@ -242,9 +242,8 @@
   </div>
 
   <div class="summary-cards">
-    <div class="card"><h3>Total Open Issues</h3><p id="totalNew">-</p></div>
+    <div class="card"><h3>Open Issues</h3><p id="totalNew">-</p></div>
     <div class="card"><h3>Total Closed</h3><p id="totalClosed">-</p></div>
-    <div class="card"><h3>% Resolved</h3><p id="percentResolved">-</p></div>
   </div>
 
   <div class="flex-row" id="reportContent">
@@ -254,9 +253,7 @@
         <tr>
           <th>Date</th>
           <th title="🆕 New Issues: Number of issues discovered/logged on this specific date. These are unique to the date.">New</th>
-          <th title="📌 Open Issues: Total issues still unresolved *as of this date*. May include issues from previous days.">Open</th>
           <th title="✅ Closed Issues: Issues resolved or closed *on this specific date*. Unique to the date.">Closed</th>
-          <th title="🚨 Severe Issues: Count of open issues on this date marked as severe. May carry over from previous days.">Severe</th>
         </tr>
       </thead>
         <tbody></tbody>
@@ -290,15 +287,15 @@
   <script>
     // Sample dummy data for table and chart - replace with real data as needed
     const data = [
-      { date: "2025-09-02", new: 8, open:13 , closed: 5,severe:'-'},
-      { date: "2025-09-03", new: 10, open: 16, closed: 1,severe:'-'},
-      { date: "2025-09-04", new: 3, open: 13, closed: 1,severe:'-'},
+      { date: "2025-09-03", new: 10,closed: 1},
+      { date: "2025-09-04", new: 3,closed: 1},
+      { date: "2025-09-05", new: 7,closed:7},
     ];
 
     const issueTableBody = document.querySelector("#issueTable tbody");
     const totalNew = document.getElementById("totalNew");
     const totalClosed = document.getElementById("totalClosed");
-    const percentResolved = document.getElementById("percentResolved");
+ 
 
     function renderTable(data) {
       issueTableBody.innerHTML = "";
@@ -316,10 +313,8 @@
           </tr>
         `;
       });
-      totalNew.textContent = sumNew;
+      totalNew.textContent = 13;
       totalClosed.textContent = sumClosed;
-      let resolvedPercent = sumNew === 0 ? 0 : Math.round((sumClosed / sumNew) * 100);
-      percentResolved.textContent = resolvedPercent + "%";
     }
 
     renderTable(data);
@@ -370,4 +365,5 @@
   </script>
 </body>
 </html>
+
 
