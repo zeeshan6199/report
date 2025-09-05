@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Issue Report Dashboard</title>
+  <title>25D Release Issue Report Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
@@ -326,14 +326,21 @@
 
   <script>
     const issueData = [
-      { date: "2025-09-03", new: 10, open:13 , closed: -},
-      { date: "2025-09-04", new: 3, open:16, closed:-}
-      ...Array.from({length: 18}, (_, i) => {
-        const d = new Date("2025-06-31");
-        d.setDate(d.getDate() + i);
-        return { date: d.toISOString().split('T')[0], new: "-", open: "-", closed: "-", severe: "-" };
-      })
-    ];
+        { date: "2025-09-03", new: 10, open: 13, closed: 0, severe: 2 },
+        { date: "2025-09-04", new: 3, open: 16, closed: 1, severe: 1 },
+        ...Array.from({ length: 26 }, (_, i) => {
+          const d = new Date("2025-09-05");
+          d.setDate(d.getDate() + i);
+          return {
+            date: d.toISOString().split('T')[0],
+            new: Math.floor(Math.random() * 5),
+            open: Math.floor(Math.random() * 20),
+            closed: Math.floor(Math.random() * 5),
+            severe: Math.random() > 0.6 ? Math.floor(Math.random() * 3) : "-"
+          };
+        })
+      ];
+
      /*
     const severeDetailsByDate = {
       "2025-06-09": ["[Supplier User] Supplier user is able to approve/reject decalaration if submitted decaration is opened through breadcrumbs.", "[CMRT] Answers from file are not imported.", "[TEST] Invalid error pop up upon save and undefined appears in part type when parent spec is created after standalone spec.","[TEST] Last error persists throughout the session using the test instance.","[TEST] Material category value is not picked from import file.","Blank dashboard for user with report viewer role.","[TEST] Grid is cleared but calculated compliance value is still appearing."],
@@ -500,12 +507,14 @@ document.getElementById("percentResolved").textContent = resolvedPercent + "%";
       }).save();
     });
 
-    startDateInput.value = "2025-06-05";
-    endDateInput.value = "2025-06-30";
+    startDateInput.value = "2025-09-03";
+    endDateInput.value = "2025-09-30";
+
     startDateInput.addEventListener("change", updateTableAndCharts);
     endDateInput.addEventListener("change", updateTableAndCharts);
     updateTableAndCharts();
   </script>
 </body>
 </html>
+
 
