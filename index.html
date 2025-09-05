@@ -304,9 +304,9 @@
           <ul class="pending-list">
             <li>Bulk Item Screens</li>
             <li>XML Intermatic files support</li>
-             <li></li>
-            <li>Few new redwood UI screens recently deployed<em>(in progress)</em></li>
-            <li>Congigurable Statuses</em></li>
+             <li>Adhoc Things</li>
+            <li>Few new redwood UI screens recently deployed</em></li>
+            <li>Configurable Statuses</em></li>
           </ul>
           <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and requires revalidation.</em></p>
         </div>
@@ -485,6 +485,9 @@ document.getElementById("percentResolved").textContent = resolvedPercent + "%";
       const current = body.getAttribute("data-theme");
       body.setAttribute("data-theme", current === "dark" ? "light" : "dark");
       updateTableAndCharts();
+      // Expand "Pending Test Coverage" by default
+      document.getElementById("pendingCoverage").style.display = "block";
+      document.getElementById("toggleIcon").textContent = "▲";
     });
 
     document.getElementById("exportPDF").addEventListener("click", () => {
@@ -506,6 +509,7 @@ document.getElementById("percentResolved").textContent = resolvedPercent + "%";
   </script>
 </body>
 </html>
+
 
 
 
