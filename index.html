@@ -255,7 +255,7 @@
 <body data-theme="light">
   <h2>📊 Release Issue Tracking Report</h2>
   <p class="desc">This report summarizes issues encountered during recent testing, visualized by type and date.</p>
-  <p class="desc"><strong>🛠️ Build Regression and Performance Testing Timeline:</strong> 23 June - 30 June</p>
+  <p class="desc"><strong>🛠️ Build Regression and Performance Testing Timeline:</strong> 15 September - 30 September</p>
 
   <div class="controls">
     <div>
@@ -302,21 +302,11 @@
         <div class="pending-box">
           <p class="pending-intro">These are items not yet fully covered by testing. Some are in progress, some remain untested, and others are partially verified but require confirmation:</p>
           <ul class="pending-list">
-            <li>SCIP</li>
-            <li>AI Chatbot</li>
-            <li>Supplier Email AI <em>(in progress)</em></li>
-            <li>Reports:
-              <ul>
-                <li>Battery Report</li>
-                <li>SCIP Report</li>
-              </ul>
-            </li>
-            <li>Mass Upload</li>
-            <li>Bulk Copy BOS</li>
-            <li>Role-Specific Access Testing</li>
-            <li>RMI Priority Testing</li>
-            <li>Specification Data Import</li>
-            <li>Copy Composition From</li>
+            <li>Bulk Item Screens</li>
+            <li>XML Intermatic files support</li>
+             <li></li>
+            <li>Few new redwood UI screens recently deployed<em>(in progress)</em></li>
+            <li>Congigurable Statuses</em></li>
           </ul>
           <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and requires revalidation.</em></p>
         </div>
@@ -336,24 +326,15 @@
 
   <script>
     const issueData = [
-      { date: "2025-06-09", new: 9, open: 22, closed: 4, severe: 7 },
-      { date: "2025-06-10", new: 7, open:18, closed:10, severe: 9 },
-      { date: "2025-06-11", new: 8, open:12, closed:10, severe: 4 },
-      { date: "2025-06-12", new: 8, open:16, closed:4, severe: 6 },
-      { date: "2025-06-16", new: 15, open:8, closed:7, severe:2 },
-      { date: "2025-06-20", new: 4, open:8, closed:8, severe:4 },
-      { date: "2025-06-23", new: 6, open:10, closed:3, severe:'-'},
-      { date: "2025-06-24", new: 2, open:8, closed:6, severe:'-'},
-      { date: "2025-06-25", new: 3, open:7, closed:4, severe:'-'},
-{ date: "2025-06-26", new: 3, open:10, closed:2, severe:5},
-{ date: "2025-06-30", new: 10, open:5, closed:11, severe:'-'},
+      { date: "2025-09-03", new: 10, open:13 , closed: -},
+      { date: "2025-09-04", new: 3, open:16, closed:-}
       ...Array.from({length: 18}, (_, i) => {
         const d = new Date("2025-06-31");
         d.setDate(d.getDate() + i);
         return { date: d.toISOString().split('T')[0], new: "-", open: "-", closed: "-", severe: "-" };
       })
     ];
-
+     /*
     const severeDetailsByDate = {
       "2025-06-09": ["[Supplier User] Supplier user is able to approve/reject decalaration if submitted decaration is opened through breadcrumbs.", "[CMRT] Answers from file are not imported.", "[TEST] Invalid error pop up upon save and undefined appears in part type when parent spec is created after standalone spec.","[TEST] Last error persists throughout the session using the test instance.","[TEST] Material category value is not picked from import file.","Blank dashboard for user with report viewer role.","[TEST] Grid is cleared but calculated compliance value is still appearing."],
       "2025-06-10": ["[Supplier User] Supplier user is able to approve/reject decalaration if submitted decaration is opened through breadcrumbs.", "[CMRT] Answers from file are not imported.", "[TEST] Invalid error pop up upon save and undefined appears in part type when parent spec is created after standalone spec.","[TEST] Last error persists throughout the session using the test instance.","[TEST] Material category value is not picked from import file.","No 'Add Scip attribute' option present in toolbar when spec reach svhc and obj in open to supplier state.","[TEST] Preliminary Non-Compliance Report showing no data for SCIP section.","[TEST] When subpart row is selected on reach svhc declaration , add scip attributes option should appear.","[Supplier Email AI] No reminder email back to supplier mentioning file wasn't uploaded and retry is needed."],
@@ -364,6 +345,7 @@
       
       
     };
+    */
     
 
     const tbody = document.querySelector("#issueTable tbody");
@@ -384,8 +366,8 @@
 
     function updateTableAndCharts() {
       tbody.innerHTML = "";
-      const start = new Date(startDateInput.value || "2025-06-01");
-      const end = new Date(endDateInput.value || "2025-06-30");
+      const start = new Date(startDateInput.value || "2025-09-01");
+      const end = new Date(endDateInput.value || "2025-09-30");
       const filtered = issueData.filter(d => {
         const dt = new Date(d.date);
         return dt >= start && dt <= end;
@@ -526,3 +508,4 @@ document.getElementById("percentResolved").textContent = resolvedPercent + "%";
   </script>
 </body>
 </html>
+
