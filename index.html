@@ -223,10 +223,13 @@
         <p class="pending-intro">These bugs are high-priority and remain unresolved. Immediate attention is required:</p>
         <ul class="pending-list">
           <li>[TEST] 500 backend error on Excel file import flow.</li>
-          <li>[TEST] COC upload flow isn't working — file never appears on UI.</li>
           <li>[TEST] Compute Compliance from composition errors out.</li>
           <li>[Bulk Copy BOS Revamp] Data not copied to destination MPN despite process showing complete.</li>
-          <li>[Configurable Status] Updated compliance status names not appearing in search.</li>
+          <li>[Test] Class C declaration , file parsing failing on a valid file.</li>
+          [TEST] Class C declaration , overthreshold values given but declared compliance not appearing.
+          <li>[TEST] Class C , when overthreshold value is given and composition is saved , backend throws 500 error.</li>
+          <li>[TEST] Supplier status graph tells us about parts present falling in criteria but clicking on graph takes to empty search result</li>
+
         </ul>
         <p class="pending-note"><em>Note: This list is updated based on severity and impact.</em></p>
       </div>
@@ -254,6 +257,8 @@
       { date: "2025-09-03", new: 10, closed: 1 },
       { date: "2025-09-04", new: 3, closed: 1 },
       { date: "2025-09-05", new: 7, closed: 7 },
+      { date: "2025-09-08", new: 8, closed: 2 },
+
     ];
 
     const issueTableBody = document.querySelector("#issueTable tbody");
@@ -274,7 +279,7 @@
           </tr>
         `;
       });
-      totalNew.textContent = 13;
+      totalNew.textContent = 15;
       totalClosed.textContent = sumClosed;
     }
 
@@ -345,4 +350,5 @@
   </script>
 </body>
 </html>
+
 
