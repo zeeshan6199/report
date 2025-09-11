@@ -222,7 +222,6 @@
       <div class="pending-box">
         <p class="pending-intro">These bugs are high-priority and remain unresolved. Immediate attention is required:</p>
         <ul class="pending-list">
-          <li>[Product Management] Supplier search in MFR part category returns no result [ Backend Error]</li>
           <li>[TEST] Supplier status graph tells us about parts present falling in criteria but clicking on graph takes to empty search result.</li>
         </ul>
         <p class="pending-note"><em>Note: This list is updated based on severity and impact.</em></p>
@@ -253,6 +252,7 @@
       { date: "2025-09-05", new: 7, closed: 7 },
       { date: "2025-09-08", new: 8, closed: 2 },
       { date: "2025-09-10", new: 2, closed: 8 },
+      { date: "2025-09-11", new: 5, closed: 3 },
 
     ];
 
@@ -274,7 +274,7 @@
           </tr>
         `;
       });
-      totalNew.textContent = 9;
+      totalNew.textContent = 10;
       totalClosed.textContent = sumClosed;
     }
 
@@ -345,6 +345,7 @@
   </script>
 </body>
 </html>
+
 
 
 
