@@ -222,9 +222,7 @@
       <div class="pending-box">
         <p class="pending-intro">These bugs are high-priority and remain unresolved. Immediate attention is required:</p>
         <ul class="pending-list">
-           <li>[TEST] When parent specification is created after stanadlone specification or viceversa error occurs.</li>
-           <li>[BULK COMPLIANCE TEMPLATE] BULK compliance template has hard coded specifications of test instance currently .</li>
-           <li>BOM Report not showing compliance status on an AML when it is present in actual.</li>
+           
       
         </ul>
         <p class="pending-note"><em>Note: This list is updated based on severity and impact.</em></p>
@@ -236,11 +234,7 @@
       <div class="pending-box">
         <p class="pending-intro">These are items not yet fully covered by testing. Some are in progress, some remain untested, and others are partially verified:</p>
         <ul class="pending-list">
-          <li>Bulk Item Screens</li>
-          <li>XML Intermatic files support</li>
-          <li>Adhoc Things</li>
-          <li>Redwood UI screens (newly deployed)</li>
-          <li>Configurable Statuses</li>
+         
         </ul>
         <p class="pending-note"><em>Note: Some items may be partially tested, but their completion status is uncertain and needs revalidation.</em></p>
       </div>
@@ -263,6 +257,11 @@
       { date: "2025-09-19", new: 8, closed: 8 },
       { date: "2025-09-22", new: 1, closed: 4 },
       { date: "2025-09-23", new: 5, closed: 2 },
+      { date: "2025-09-24", new: 4, closed: 0 },
+      { date: "2025-09-25", new: 4, closed: 0 },
+      { date: "2025-09-26", new: 9, closed: 0 },
+      { date: "2025-09-29", new: 0, closed: 3 },
+      { date: "2025-09-30", new: 1, closed: 5 },
 
     ];
 
@@ -284,7 +283,7 @@
           </tr>
         `;
       });
-      totalNew.textContent = 6;
+      totalNew.textContent = 1;
       totalClosed.textContent = sumClosed;
     }
 
@@ -355,6 +354,7 @@
   </script>
 </body>
 </html>
+
 
 
 
